@@ -2,6 +2,8 @@ const { reporters } = require("mocha");
 const RPClient = require("reportportal-client");
 const  { testItemStatuses, logLevels, entityType } = require("./constants");
 const { getBase64FileObject } = require("./reporter-utilities");
+const argv = require('minimist')(process.argv.slice(2));
+
 
 const { FAILED, SKIPPED } = testItemStatuses;
 const { ERROR } = logLevels;
@@ -18,7 +20,7 @@ class ReportPortalReporter extends reporters.Base {
     runner.on("start", async () => {
       try {
         const launch = {
-          token: config.reporterOptions.token,
+          token: config.reporterOptions.token || argv.rpToken,
           name: config.reporterOptions.launch,
           description: config.reporterOptions.description,
           attributes: config.reporterOptions.attributes,
